@@ -12,19 +12,23 @@ import java.util.stream.Collectors;
 @Getter
 @NoArgsConstructor
 public class WordDTO {
+
     @NotEmpty(message = "field word should not be empty")
     @Pattern(regexp = "^[A-Za-zА-яа-я]*$",
             message = "should contain only letters")
     @NotNull(message = "word should not be null")
     private String word;
+
     @Pattern(regexp = "^[A-Za-zА-яа-я]*$",
             message = "should contain only letters")
     private String prefix;
+
     @NotEmpty(message = "field root should not be empty")
     @Pattern(regexp = "^[A-Za-zА-яа-я]*$",
             message = "should contain only letters")
     @NotNull(message = "root should not be null")
     private String root;
+
     @Pattern(regexp = "^[A-Za-zА-яа-я]*$",
             message = "should contain only letters")
     private List<String> suffixes;
@@ -41,22 +45,29 @@ public class WordDTO {
     }
 
     private String getPartValue(String part) {
-        if (part != null && !part.equals(""))
+        if (part != null && !part.equals("")) {
             return part.toLowerCase();
-        else
+        } else {
             return null;
+        }
     }
 
     public boolean checkIfWorldIsValid() {
         StringBuilder composedWord = new StringBuilder();
-        if (prefix != null)
+        if (prefix != null) {
             composedWord.append(prefix);
-        if (root != null)
-            composedWord.append(root);
-        for (String s : suffixes) {
-            if (s != null)
-                composedWord.append(s);
         }
+
+        if (root != null) {
+            composedWord.append(root);
+        }
+
+        for (String s : suffixes) {
+            if (s != null) {
+                composedWord.append(s);
+            }
+        }
+
         return composedWord.toString().equals(word);
     }
 
@@ -75,4 +86,5 @@ public class WordDTO {
     public void setSuffixes(List<String> suffixes) {
         this.suffixes = getListValue(suffixes);
     }
+
 }

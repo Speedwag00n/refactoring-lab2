@@ -1,7 +1,7 @@
 package service;
 
-import DTO.WordDTO;
-import errorHandler.RestTemplateResponseErrorHandler;
+import dto.WordDTO;
+import error.RestTemplateResponseErrorHandler;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;

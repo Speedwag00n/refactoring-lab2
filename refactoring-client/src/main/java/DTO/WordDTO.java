@@ -1,4 +1,4 @@
-package DTO;
+package dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,7 +15,6 @@ public class WordDTO {
     private String prefix;
     private String root;
     private List<String> suffixes;
-
 
     public void setWord(String word) {
         this.word = getPartValue(word);
@@ -38,10 +37,11 @@ public class WordDTO {
     }
 
     private String getPartValue(String part) {
-        if (part != null && !part.equals(""))
+        if (part != null && !part.equals("")) {
             return part.toLowerCase();
-        else
+        } else {
             return null;
+        }
     }
 
     @Override
@@ -51,10 +51,12 @@ public class WordDTO {
             stringBuilder.append(prefix);
             stringBuilder.append("-");
         }
+
         if (root != null) {
             stringBuilder.append(root);
             stringBuilder.append("-");
         }
+
         if (suffixes != null && !suffixes.isEmpty()) {
             for (int i = 0; i < suffixes.size(); i++) {
                 stringBuilder.append(suffixes.get(i));
@@ -64,6 +66,7 @@ public class WordDTO {
         } else {
             stringBuilder.deleteCharAt(stringBuilder.length() - 1);
         }
+
         return stringBuilder.toString();
     }
 }

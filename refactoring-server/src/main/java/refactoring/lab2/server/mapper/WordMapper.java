@@ -27,51 +27,66 @@ public class WordMapper {
         this.rootService = rootService;
     }
 
-    public WordDTO mapWordToWordDTO(Word word) {
+    public WordDTO entityToDto(Word word) {
         WordDTO wordDTO = new WordDTO();
-        if (word.getPrefix() != null)
+
+        if (word.getPrefix() != null) {
             wordDTO.setPrefix(word.getPrefix().getPrefix());
-        else
+        } else {
             wordDTO.setPrefix(null);
-        if (word.getRoot() != null)
+        }
+
+        if (word.getRoot() != null) {
             wordDTO.setRoot(word.getRoot().getRoot());
-        else
+        } else {
             wordDTO.setRoot(null);
+        }
+
         List<String> suffixes = word.getSuffixes().stream()
                 .map(Suffix::getSuffix).collect(Collectors.toList());
+
         wordDTO.setSuffixes(suffixes);
-        wordDTO.setWord(word.getWord()
-        );
+        wordDTO.setWord(word.getWord());
+
         return wordDTO;
     }
 
-    public List<WordDTO> mapWordListToWordDTOList(List<Word> words) {
-        return words.stream().map(this::mapWordToWordDTO).collect(Collectors.toList());
+    public List<WordDTO> entitiesToDtos(List<Word> words) {
+        return words.stream().map(this::entityToDto).collect(Collectors.toList());
     }
 
-    public Word mapWordDTOToWord(WordDTO wordDTO) {
-        if (!wordDTO.checkIfWorldIsValid())
+    public Word dtoToEntity(WordDTO wordDTO) {
+        if (!wordDTO.checkIfWorldIsValid()) {
             throw new ComposedWordIsNotValid(wordDTO.getWord() + "'s parts are not valid");
+        }
+
         Word word = new Word();
+
         int partsNumber = 0;
+
         if (wordDTO.getPrefix() != null) {
             Prefix prefix = prefixService.getByPrefixAndSaveIfNotExists(wordDTO.getPrefix());
             word.setPrefix(prefix);
             partsNumber++;
         }
+
         if (wordDTO.getRoot() != null) {
             Root root = rootService.getByRootAndSaveIfNotExists(wordDTO.getRoot());
             word.setRoot(root);
             partsNumber++;
         }
+
         if (wordDTO.getSuffixes() != null && !wordDTO.getSuffixes().isEmpty()) {
             List<Suffix> suffixes = wordDTO.getSuffixes().stream()
                     .map(suffixService::getBySuffixAndSaveIfNotExists).collect(Collectors.toList());
+
             word.setSuffixes(suffixes);
             partsNumber = partsNumber + suffixes.size();
         }
+
         word.setPartsNumber(partsNumber);
         word.setWord(wordDTO.getWord());
+
         return word;
 
     }

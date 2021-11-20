@@ -13,5 +13,4 @@ public interface WordRepository extends JpaRepository<Word, Integer> {
     List<Word> findAllByRootOrderByPartsNumber(Root root);
 
     Optional<Word> findByWord(String word);
-
 }

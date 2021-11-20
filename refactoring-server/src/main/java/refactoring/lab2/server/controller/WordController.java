@@ -34,15 +34,18 @@ public class WordController {
                                           @NotEmpty(message = "word should not be empty")
                                           @Pattern(regexp = "^[A-Za-zА-яа-я]*$", message = "word should contain only letters")
                                                   String word) {
+
         List<Word> words = wordService.getTheSameRootWords(word);
-        return wordMapper.mapWordListToWordDTOList(words);
+
+        return wordMapper.entitiesToDtos(words);
     }
 
     @PostMapping
     public ResponseEntity<?> saveNewWord(@RequestBody WordDTO wordDTO) {
         System.out.println("wordDTO " + wordDTO.getWord());
-        Word word = wordMapper.mapWordDTOToWord(wordDTO);
+        Word word = wordMapper.dtoToEntity(wordDTO);
         wordService.saveNewWord(word);
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

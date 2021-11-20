@@ -1,8 +1,9 @@
 package service;
 
-import DTO.WordDTO;
+import dto.WordDTO;
 import exception.ValidationException;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,8 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 public class WordService {
     private String currentWord;
@@ -22,7 +22,6 @@ public class WordService {
     public static final String YES = "да";
     public static final String QUIT = "q";
 
-
     public WordService() {
         this.scanner = new Scanner(System.in);
         this.wordDTO = new WordDTO();
@@ -30,10 +29,15 @@ public class WordService {
 
     public String readNewWord() throws ValidationException {
         currentWord = printMsgAndReadLine("Введите слово: ");
-        if (currentWord.trim().equals(""))
+
+        if (currentWord.trim().equals("")) {
             throw new ValidationException(EMPTY_STRING_MSG);
-        if (currentWord.toLowerCase().equals(QUIT))
+        }
+
+        if (currentWord.toLowerCase().equals(QUIT)) {
             System.exit(0);
+        }
+
         return currentWord;
     }
 
@@ -48,13 +52,16 @@ public class WordService {
     private List<String> readSuffixes() {
         List<String> suffixes = new ArrayList<>();
         boolean continueToRead = true;
+
         while (continueToRead) {
             String suffix = printMsgAndReadLine("Суффикс или окончание: ");
-            if (!suffix.trim().equals(""))
+            if (!suffix.trim().equals("")) {
                 suffixes.add(suffix);
-            else
+            } else {
                 continueToRead = false;
+            }
         }
+
         return suffixes;
     }
 
@@ -76,6 +83,7 @@ public class WordService {
         wordDTO.setPrefix(readPrefix());
         wordDTO.setRoot(readRoot());
         wordDTO.setSuffixes(readSuffixes());
+
         return wordDTO;
     }
 

@@ -1,4 +1,4 @@
-package errorHandler;
+package error;
 
 import exception.*;
 import org.springframework.http.client.ClientHttpResponse;
@@ -14,14 +14,12 @@ public class RestTemplateResponseErrorHandler implements ResponseErrorHandler {
     public static final String SERVER_EXCEPTION_MSG = "На сервере произошла непредвиденная ошибка";
 
     @Override
-    public boolean hasError(ClientHttpResponse httpResponse)
-            throws IOException {
+    public boolean hasError(ClientHttpResponse httpResponse) throws IOException {
         return (httpResponse.getRawStatusCode() != 200);
     }
 
     @Override
-    public void handleError(ClientHttpResponse httpResponse)
-            throws IOException {
+    public void handleError(ClientHttpResponse httpResponse) throws IOException {
 
         int statusCode = httpResponse.getRawStatusCode();
 
