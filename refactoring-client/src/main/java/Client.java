@@ -7,11 +7,14 @@ import service.WordService;
 import static service.RequestService.SERVER_IS_NOT_AVAILABLE_MSG;
 import static service.WordService.SAME_ROOT_WORDS_MSG;
 import static service.WordService.YES;
+import static service.WordService.QUIT;
 
 public class Client {
 
     public static void main(String[] args) {
-        while (true) {
+        boolean running = true;
+
+        while (running) {
             RequestService requestService = new RequestService();
             WordService wordService = new WordService();
 
@@ -21,6 +24,11 @@ public class Client {
                 newWord = wordService.readNewWord();
             } catch (ValidationException ex) {
                 System.out.println(ex.getMessage());
+                continue;
+            }
+
+            if (newWord.equalsIgnoreCase(QUIT)) {
+                running = false;
                 continue;
             }
 

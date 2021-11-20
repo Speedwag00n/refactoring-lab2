@@ -34,10 +34,6 @@ public class WordService {
             throw new ValidationException(EMPTY_STRING_MSG);
         }
 
-        if (currentWord.toLowerCase().equals(QUIT)) {
-            System.exit(0);
-        }
-
         return currentWord;
     }
 
