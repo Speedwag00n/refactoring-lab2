@@ -22,8 +22,8 @@ public class WordService {
     public static final String YES = "да";
     public static final String QUIT = "q";
 
-    public WordService() {
-        this.scanner = new Scanner(System.in);
+    public WordService(Scanner scanner) {
+        this.scanner = scanner;
         this.wordDTO = new WordDTO();
     }
 

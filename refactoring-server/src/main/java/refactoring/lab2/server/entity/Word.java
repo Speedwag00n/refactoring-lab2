@@ -35,6 +35,9 @@ public class Word {
     @Column
     private Integer partsNumber;
 
+    @ManyToOne
+    private User owner;
+
     public Word(String word, List<Prefix> prefixes, Root root, List<Suffix> suffixes) {
         this.word = word;
         this.prefixes = prefixes;

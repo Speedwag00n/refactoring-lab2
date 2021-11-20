@@ -1,8 +1,11 @@
+import auth.AuthManager;
 import dto.WordDTO;
 import exception.*;
 import org.springframework.web.client.ResourceAccessException;
 import service.RequestService;
 import service.WordService;
+
+import java.util.Scanner;
 
 import static service.RequestService.SERVER_IS_NOT_AVAILABLE_MSG;
 import static service.WordService.SAME_ROOT_WORDS_MSG;
@@ -12,11 +15,23 @@ import static service.WordService.QUIT;
 public class Client {
 
     public static void main(String[] args) {
-        boolean running = true;
+        Scanner scanner = new Scanner(System.in);
+        RequestService requestService = new RequestService();
+        AuthManager authManager = new AuthManager(requestService, scanner);
+
+        try {
+            authManager.init();
+        } catch (ResourceAccessException ex) {
+            System.out.println(SERVER_IS_NOT_AVAILABLE_MSG);
+        } catch (ServerException ex) {
+            System.out.println(ex.getMessage());
+        }
+
+        boolean running = authManager.isInited();
 
         while (running) {
-            RequestService requestService = new RequestService();
-            WordService wordService = new WordService();
+
+            WordService wordService = new WordService(scanner);
 
             String newWord;
 
@@ -40,7 +55,7 @@ public class Client {
                 System.out.println(ex.getMessage());
             } catch (ResourceAccessException ex) {
                 System.out.println(SERVER_IS_NOT_AVAILABLE_MSG);
-            } catch (WordNotFoundException ex) {
+            } catch (NotFoundException ex) {
                 System.out.println(ex.getMessage());
                 processNotFoundWord(wordService, requestService);
             }

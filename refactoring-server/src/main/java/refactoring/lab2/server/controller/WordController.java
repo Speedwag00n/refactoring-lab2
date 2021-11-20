@@ -33,18 +33,19 @@ public class WordController {
                                           @NotNull(message = "word should not be null")
                                           @NotEmpty(message = "word should not be empty")
                                           @Pattern(regexp = "^[A-Za-zА-яа-я]*$", message = "word should contain only letters")
-                                                  String word) {
+                                                  String word,
+                                          @RequestHeader(value = "Authorization") String tokenHeader) {
 
-        List<Word> words = wordService.getTheSameRootWords(word);
+        List<Word> words = wordService.getTheSameRootWords(word, tokenHeader);
 
         return wordMapper.entitiesToDtos(words);
     }
 
     @PostMapping
-    public ResponseEntity<?> saveNewWord(@RequestBody WordDTO wordDTO) {
+    public ResponseEntity<?> saveNewWord(@RequestBody WordDTO wordDTO, @RequestHeader(value = "Authorization") String tokenHeader) {
         System.out.println("wordDTO " + wordDTO.getWord());
         Word word = wordMapper.dtoToEntity(wordDTO);
-        wordService.saveNewWord(word);
+        wordService.saveNewWord(word, tokenHeader);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

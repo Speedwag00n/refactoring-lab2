@@ -11,6 +11,7 @@ public class RestTemplateResponseErrorHandler implements ResponseErrorHandler {
     public static final String WORD_NOT_FOUND_MSG = "Неизвестное слово. Хотите добавить его в словарь (да/нет)?";
     public static final String COMPOSED_WORD_MSG = "При введении составных частей слова была допущена ошибка.";
     public static final String WORD_EXISTS_MSG = "Данное слово уже существует в словаре";
+    public static final String UNKNOWN_USER = "Неверный логин или пароль";
     public static final String SERVER_EXCEPTION_MSG = "На сервере произошла непредвиденная ошибка";
 
     @Override
@@ -25,13 +26,15 @@ public class RestTemplateResponseErrorHandler implements ResponseErrorHandler {
 
         switch (statusCode) {
             case 404:
-                throw new WordNotFoundException(WORD_NOT_FOUND_MSG);
+                throw new NotFoundException(WORD_NOT_FOUND_MSG);
             case 435:
                 throw new ComposedWordIsNotValid(COMPOSED_WORD_MSG);
             case 436:
                 throw new WordAlreadyExists(WORD_EXISTS_MSG);
             case 400:
                 throw new ValidationException(VALIDATION_MSG);
+            case 403:
+                throw new NotFoundException(UNKNOWN_USER);
             default:
                 throw new ServerException(SERVER_EXCEPTION_MSG);
         }
