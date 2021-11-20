@@ -42,7 +42,7 @@ public class WordService {
         boolean continueToRead = true;
 
         while (continueToRead) {
-            String prefix = printMsgAndReadLine("Префикс: ");
+            String prefix = printMsgAndReadLine("Приставка: ");
             if (!prefix.trim().equals("")) {
                 prefixes.add(prefix);
             } else {
