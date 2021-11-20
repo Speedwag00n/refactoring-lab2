@@ -21,7 +21,7 @@ public class WordDTO {
 
     @Pattern(regexp = "^[A-Za-zА-яа-я]*$",
             message = "should contain only letters")
-    private String prefix;
+    private List<String> prefixes;
 
     @NotEmpty(message = "field root should not be empty")
     @Pattern(regexp = "^[A-Za-zА-яа-я]*$",
@@ -33,9 +33,9 @@ public class WordDTO {
             message = "should contain only letters")
     private List<String> suffixes;
 
-    public WordDTO(String word, String prefix, String root, List<String> suffixes) {
+    public WordDTO(String word, List<String> prefixes, String root, List<String> suffixes) {
         this.word = getPartValue(word);
-        this.prefix = getPartValue(prefix);
+        this.prefixes = getListValue(prefixes);
         this.root = getPartValue(root);
         this.suffixes = getListValue(suffixes);
     }
@@ -54,8 +54,11 @@ public class WordDTO {
 
     public boolean checkIfWorldIsValid() {
         StringBuilder composedWord = new StringBuilder();
-        if (prefix != null) {
-            composedWord.append(prefix);
+
+        for (String s : prefixes) {
+            if (s != null) {
+                composedWord.append(s);
+            }
         }
 
         if (root != null) {
@@ -75,8 +78,8 @@ public class WordDTO {
         this.word = getPartValue(word);
     }
 
-    public void setPrefix(String prefix) {
-        this.prefix = getPartValue(prefix);
+    public void setPrefixes(List<String> prefixes) {
+        this.prefixes = getListValue(prefixes);
     }
 
     public void setRoot(String root) {

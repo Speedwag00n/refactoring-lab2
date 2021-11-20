@@ -17,8 +17,11 @@ public class Word {
 
     private String word;
 
-    @ManyToOne
-    private Prefix prefix;
+    @ManyToMany
+    @JoinTable(name = "words_prefixes",
+            joinColumns = {@JoinColumn(name = "word_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "prefix", referencedColumnName = "prefix")})
+    protected List<Prefix> prefixes;
 
     @ManyToOne
     private Root root;
@@ -32,9 +35,9 @@ public class Word {
     @Column
     private Integer partsNumber;
 
-    public Word(String word, Prefix prefix, Root root, List<Suffix> suffixes) {
+    public Word(String word, List<Prefix> prefixes, Root root, List<Suffix> suffixes) {
         this.word = word;
-        this.prefix = prefix;
+        this.prefixes = prefixes;
         this.root = root;
         this.suffixes = suffixes;
     }

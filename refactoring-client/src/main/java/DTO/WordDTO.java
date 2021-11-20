@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class WordDTO {
     private String word;
-    private String prefix;
+    private List<String> prefixes;
     private String root;
     private List<String> suffixes;
 
@@ -20,8 +20,8 @@ public class WordDTO {
         this.word = getPartValue(word);
     }
 
-    public void setPrefix(String prefix) {
-        this.prefix = getPartValue(prefix);
+    public void setPrefixes(List<String> prefixes) {
+        this.prefixes = getListValue(prefixes);
     }
 
     public void setRoot(String root) {
@@ -47,9 +47,12 @@ public class WordDTO {
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
-        if (prefix != null) {
-            stringBuilder.append(prefix);
-            stringBuilder.append("-");
+
+        if (prefixes != null) {
+            for (int i = 0; i < prefixes.size(); i++) {
+                stringBuilder.append(prefixes.get(i));
+                stringBuilder.append("-");
+            }
         }
 
         if (root != null) {
@@ -60,8 +63,9 @@ public class WordDTO {
         if (suffixes != null && !suffixes.isEmpty()) {
             for (int i = 0; i < suffixes.size(); i++) {
                 stringBuilder.append(suffixes.get(i));
-                if (i != suffixes.size() - 1)
+                if (i != suffixes.size() - 1) {
                     stringBuilder.append("-");
+                }
             }
         } else {
             stringBuilder.deleteCharAt(stringBuilder.length() - 1);

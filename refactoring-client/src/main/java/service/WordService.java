@@ -37,8 +37,20 @@ public class WordService {
         return currentWord;
     }
 
-    private String readPrefix() {
-        return printMsgAndReadLine("Приставка: ");
+    private List<String> readPrefixes() {
+        List<String> prefixes = new ArrayList<>();
+        boolean continueToRead = true;
+
+        while (continueToRead) {
+            String prefix = printMsgAndReadLine("Префикс: ");
+            if (!prefix.trim().equals("")) {
+                prefixes.add(prefix);
+            } else {
+                continueToRead = false;
+            }
+        }
+
+        return prefixes;
     }
 
     private String readRoot() {
@@ -76,7 +88,7 @@ public class WordService {
 
     public WordDTO readWordByParts() {
         wordDTO.setWord(currentWord);
-        wordDTO.setPrefix(readPrefix());
+        wordDTO.setPrefixes(readPrefixes());
         wordDTO.setRoot(readRoot());
         wordDTO.setSuffixes(readSuffixes());
 

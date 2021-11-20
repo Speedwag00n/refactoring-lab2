@@ -30,11 +30,9 @@ public class WordMapper {
     public WordDTO entityToDto(Word word) {
         WordDTO wordDTO = new WordDTO();
 
-        if (word.getPrefix() != null) {
-            wordDTO.setPrefix(word.getPrefix().getPrefix());
-        } else {
-            wordDTO.setPrefix(null);
-        }
+        List<String> prefixes = word.getPrefixes().stream()
+                .map(Prefix::getPrefix).collect(Collectors.toList());
+        wordDTO.setPrefixes(prefixes);
 
         if (word.getRoot() != null) {
             wordDTO.setRoot(word.getRoot().getRoot());
@@ -44,8 +42,8 @@ public class WordMapper {
 
         List<String> suffixes = word.getSuffixes().stream()
                 .map(Suffix::getSuffix).collect(Collectors.toList());
-
         wordDTO.setSuffixes(suffixes);
+
         wordDTO.setWord(word.getWord());
 
         return wordDTO;
@@ -64,10 +62,20 @@ public class WordMapper {
 
         int partsNumber = 0;
 
-        if (wordDTO.getPrefix() != null) {
-            Prefix prefix = prefixService.getByPrefixAndSaveIfNotExists(wordDTO.getPrefix());
-            word.setPrefix(prefix);
-            partsNumber++;
+        if (wordDTO.getPrefixes() != null && !wordDTO.getPrefixes().isEmpty()) {
+            List<Prefix> prefixes = wordDTO.getPrefixes().stream()
+                    .map(prefixService::getByPrefixAndSaveIfNotExists).collect(Collectors.toList());
+
+            word.setPrefixes(prefixes);
+            partsNumber = partsNumber + prefixes.size();
+        }
+
+        if (wordDTO.getPrefixes() != null && !wordDTO.getSuffixes().isEmpty()) {
+            List<Suffix> suffixes = wordDTO.getSuffixes().stream()
+                    .map(suffixService::getBySuffixAndSaveIfNotExists).collect(Collectors.toList());
+
+            word.setSuffixes(suffixes);
+            partsNumber = partsNumber + suffixes.size();
         }
 
         if (wordDTO.getRoot() != null) {
